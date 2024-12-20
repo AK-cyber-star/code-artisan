@@ -1,16 +1,15 @@
-"use client"
+"use client";
 
 import { getExecutionResult, useCodeEditorStore } from "@/store/useCodeEditorStore";
-import { useClerk } from "@clerk/nextjs"
+import { useUser } from "@clerk/nextjs";
 import { useMutation } from "convex/react";
 import { motion } from "framer-motion";
 import { Loader2, Play } from "lucide-react";
 import { api } from "../../../../convex/_generated/api";
 
-const RunButton = () => {
-
-  const { user } = useClerk();
-  const { runCode, isRunning, language } = useCodeEditorStore(); 
+function RunButton() {
+  const { user } = useUser();
+  const { runCode, language, isRunning } = useCodeEditorStore();
   const saveExecution = useMutation(api.codeExecutions.saveExecution);
 
   const handleRun = async () => {
@@ -18,30 +17,29 @@ const RunButton = () => {
     const result = getExecutionResult();
 
     if (user && result) {
-      // save the result to convex
       await saveExecution({
         language,
         code: result.code,
         output: result.output || undefined,
-        error: result.error || undefined
+        error: result.error || undefined,
       });
     }
-  }
+  };
 
   return (
     <motion.button
       onClick={handleRun}
       disabled={isRunning}
       whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
       className={`
         group relative inline-flex items-center gap-2.5 px-5 py-2.5
-        disabled:cursor-not-allowed focus:outline-none
-        `}
+        disabled:cursor-not-allowed
+        focus:outline-none
+      `}
     >
-      {/* bg-gradient decorator */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl opacity-100
-        transition-opacity group-hover:opacity-90" />
+      {/* bg wit gradient */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl opacity-100 transition-opacity group-hover:opacity-90" />
 
       <div className="relative flex items-center gap-2.5">
         {isRunning ? (
@@ -63,9 +61,7 @@ const RunButton = () => {
           </>
         )}
       </div>
-
     </motion.button>
-  )
+  );
 }
-
-export default RunButton
+export default RunButton;

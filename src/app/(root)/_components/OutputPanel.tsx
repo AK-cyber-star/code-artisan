@@ -85,7 +85,6 @@ function OutputPanel() {
           )}
         </div>
       </div>
-      
     </div>
   );
 }

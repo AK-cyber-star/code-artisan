@@ -1,5 +1,3 @@
-"use client"
-
 import { useCodeEditorStore } from "@/store/useCodeEditorStore";
 import { useMutation } from "convex/react";
 import { useState } from "react";
@@ -7,33 +5,30 @@ import { api } from "../../../../convex/_generated/api";
 import { X } from "lucide-react";
 import toast from "react-hot-toast";
 
-type onCloseType = () => void;
-
-const ShareSnippetDialog = ({ onClose } : { onClose : onCloseType }) => {
-  const [ title, setTitle ] = useState("");
-  const [ isSharing, setIsSharing ] = useState(false);
+function ShareSnippetDialog({ onClose }: { onClose: () => void }) {
+  const [title, setTitle] = useState("");
+  const [isSharing, setIsSharing] = useState(false);
   const { language, getCode } = useCodeEditorStore();
   const createSnippet = useMutation(api.snippets.createSnippet);
 
   const handleShare = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     setIsSharing(true);
 
     try {
       const code = getCode();
       await createSnippet({ title, language, code });
-      onClose(); // closes automatically after sharing successfully
+      onClose();
       setTitle("");
-      toast.success("Snippet shared successfully!")
+      toast.success("Snippet shared successfully");
     } catch (error) {
-      console.log("Error creating snippet: ", error);
+      console.log("Error creating snippet:", error);
       toast.error("Error creating snippet");
     } finally {
       setIsSharing(false);
     }
-
-  }
+  };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -83,5 +78,4 @@ const ShareSnippetDialog = ({ onClose } : { onClose : onCloseType }) => {
     </div>
   );
 }
-
-export default ShareSnippetDialog
+export default ShareSnippetDialog;

@@ -18,9 +18,6 @@ async function PricingPage() {
     userId: user?.id || "",
   });
 
-  console.log("User => ", user)
-  console.log("Convex user => ", convexUser)
-
   if (convexUser?.isPro) return <ProPlanView />;
 
   return (
