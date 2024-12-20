@@ -122,7 +122,7 @@ async function PricingPage() {
                   </FeatureCategory>
                 </div>
 
-                {/* Call To Action(CTA) */}
+                {/* CTA */}
                 <div className="flex justify-center">
                   <SignedIn>
                     <UpgradeButton />
